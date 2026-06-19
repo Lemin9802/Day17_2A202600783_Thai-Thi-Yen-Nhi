@@ -1,0 +1,2 @@
+{"id": "t0001", "prompt": "Can I return a widget I bought 10 days ago?", "expected_response": "Yes. Widgets can be returned within 30 days for a full refund, so a 10-day-old widget qualifies.", "metadata": {"status": "ok", "error_type": "", "latency_ms": 1840, "total_tokens": 578, "n_spans": 3}}
+{"id": "t0002", "prompt": "What warranty does a gadget have?", "expected_response": "Gadgets carry a 90-day limited warranty covering manufacturing defects.", "metadata": {"status": "ok", "error_type": "", "latency_ms": 2110, "total_tokens": 534, "n_spans": 3}}

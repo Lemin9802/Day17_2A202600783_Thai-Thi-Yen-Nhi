@@ -1,0 +1,9 @@
+trace_id,session_id,user_id,status,error_type,split,latency_ms,total_tokens,n_spans,n_tool_calls,has_error,has_rag_miss
+t0001,s-alpha,u100,ok,,eval,1840,578,3,1,False,False
+t0002,s-beta,u101,ok,,eval,2110,534,3,1,False,False
+t0003,s-gamma,u102,error,ToolError,train_pool,980,0,2,1,True,True
+t0004,s-delta,u103,ok,,train_pool,1520,524,3,1,False,False
+t0005,s-eps,u104,error,Refusal,train_pool,760,499,2,0,True,False
+t0006,s-zeta,u100,ok,,train_pool,1990,548,3,1,False,False
+t0007,s-eta,u105,ok,,train_pool,1610,530,3,1,False,False
+t0008,s-theta,u106,error,Hallucination,train_pool,890,511,2,0,True,False
