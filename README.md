@@ -6,16 +6,16 @@ This submission completes the Day 17 Track 2 Data Pipeline Lab. It includes the 
 
 ## Final Status
 
-| Area | Status |
-|---|---|
-| Core pipeline | PASS |
-| `verify.py` | 16/16 checks - ALL PASS |
-| Pytest | 18 passed |
-| dbt optional track | PASS=11, ERROR=0 |
-| Generated datasets | Included |
-| Reflection | Included |
-| Bonus design | Included |
-| Bonus prototype | Included |
+| Area | Status | Evidence |
+|---|---:|---|
+| Core pipeline | PASS | [`submission/VERIFY_OUTPUT.md`](submission/VERIFY_OUTPUT.md) |
+| [`verify.py`](verify.py) | 16/16 checks - ALL PASS | [`submission/VERIFY_OUTPUT.md`](submission/VERIFY_OUTPUT.md) |
+| Pytest | 18 passed | [`submission/PYTEST_OUTPUT.md`](submission/PYTEST_OUTPUT.md) |
+| dbt optional track | PASS=11, ERROR=0 | [`submission/DBT_BUILD_OUTPUT.md`](submission/DBT_BUILD_OUTPUT.md) |
+| Generated datasets | Included | [`datasets/eval_golden.jsonl`](datasets/eval_golden.jsonl), [`datasets/preference_pairs.jsonl`](datasets/preference_pairs.jsonl) |
+| Reflection | Included | [`submission/REFLECTION.md`](submission/REFLECTION.md) |
+| Bonus design | Included | [`bonus/DESIGN.md`](bonus/DESIGN.md) |
+| Bonus prototype | Included | [`bonus/prototype_observability.py`](bonus/prototype_observability.py), [`bonus/PROTOTYPE_OUTPUT.md`](bonus/PROTOTYPE_OUTPUT.md) |
 
 ## Core Verification
 
@@ -25,6 +25,10 @@ Command:
 python verify.py
 ```
 
+Script:
+
+[`verify.py`](verify.py)
+
 Result:
 
 ```text
@@ -33,9 +37,7 @@ RESULT: 16/16 checks - ALL PASS
 
 Saved output:
 
-```text
-submission/VERIFY_OUTPUT.md
-```
+[`submission/VERIFY_OUTPUT.md`](submission/VERIFY_OUTPUT.md)
 
 The verification covers raw order extraction, validation and quarantine, Silver deduplication, Gold aggregation, streaming idempotency, document ingestion, agent trace flywheel, eval set generation, preference-pair decontamination, point-in-time ASOF feature joins, Knowledge Graph construction, multi-hop graph query, and the vector RAG limitation on multi-hop retrieval.
 
@@ -55,9 +57,7 @@ Result:
 
 Saved output:
 
-```text
-submission/PYTEST_OUTPUT.md
-```
+[`submission/PYTEST_OUTPUT.md`](submission/PYTEST_OUTPUT.md)
 
 ## dbt Optional Track
 
@@ -69,6 +69,10 @@ $env:DBT_PROFILES_DIR="."
 dbt build
 ```
 
+dbt project:
+
+[`dbt_project/`](dbt_project/)
+
 Result:
 
 ```text
@@ -78,9 +82,7 @@ PASS=11 WARN=0 ERROR=0 SKIP=0 NO-OP=0 TOTAL=11
 
 Saved output:
 
-```text
-submission/DBT_BUILD_OUTPUT.md
-```
+[`submission/DBT_BUILD_OUTPUT.md`](submission/DBT_BUILD_OUTPUT.md)
 
 The dbt build includes 1 seed, 2 models, 7 data tests, and 1 unit test.
 
@@ -88,33 +90,36 @@ The dbt build includes 1 seed, 2 models, 7 data tests, and 1 unit test.
 
 The agent trace flywheel generated the required datasets:
 
-```text
-datasets/eval_golden.jsonl
-datasets/preference_pairs.jsonl
-```
+- [`datasets/eval_golden.jsonl`](datasets/eval_golden.jsonl)
+- [`datasets/preference_pairs.jsonl`](datasets/preference_pairs.jsonl)
 
 Summary:
 
-- `eval_golden.jsonl`: 2 eval rows
-- `preference_pairs.jsonl`: 1 clean preference pair after decontamination
+- [`eval_golden.jsonl`](datasets/eval_golden.jsonl): 2 eval rows
+- [`preference_pairs.jsonl`](datasets/preference_pairs.jsonl): 1 clean preference pair after decontamination
+
+Related script:
+
+[`flywheel.py`](flywheel.py)
 
 ## Reflection
 
 The required reflection is included at:
 
-```text
-submission/REFLECTION.md
-```
+[`submission/REFLECTION.md`](submission/REFLECTION.md)
 
-It answers the four required prompts: flywheel failure mode, decontamination risk, point-in-time leakage, and graph vs vector retrieval.
+It answers the four required prompts:
+
+1. Flywheel failure mode
+2. Decontamination risk
+3. Point-in-time leakage
+4. Graph vs vector retrieval
 
 ## Bonus Work
 
 The bonus work is included in:
 
-```text
-bonus/DESIGN.md
-```
+[`bonus/DESIGN.md`](bonus/DESIGN.md)
 
 Bonus topic:
 
@@ -130,15 +135,17 @@ The design includes Bronze/Silver/Gold architecture for agent traces, quality ga
 
 A small runnable prototype is included:
 
-```text
-bonus/prototype_observability.py
-```
+[`bonus/prototype_observability.py`](bonus/prototype_observability.py)
 
 Command:
 
 ```powershell
 python bonus/prototype_observability.py
 ```
+
+Input trace file:
+
+[`data/traces/agent_traces.json`](data/traces/agent_traces.json)
 
 Result:
 
@@ -150,31 +157,63 @@ eval candidates            : 2
 
 Generated prototype files:
 
-```text
-bonus/PROTOTYPE_OUTPUT.md
-bonus/prototype_quality_summary.csv
-bonus/prototype_eval_candidates.jsonl
+- [`bonus/PROTOTYPE_OUTPUT.md`](bonus/PROTOTYPE_OUTPUT.md)
+- [`bonus/prototype_quality_summary.csv`](bonus/prototype_quality_summary.csv)
+- [`bonus/prototype_eval_candidates.jsonl`](bonus/prototype_eval_candidates.jsonl)
+
+The prototype reads [`data/traces/agent_traces.json`](data/traces/agent_traces.json), recursively flattens nested spans, extracts request-level observability fields, produces a quality summary, and produces eval candidate JSONL.
+
+## Knowledge Graph Demo
+
+The Knowledge Graph demo can be reproduced with:
+
+```powershell
+python kg_demo.py
 ```
 
-The prototype reads `data/traces/agent_traces.json`, recursively flattens nested spans, extracts request-level observability fields, produces a quality summary, and produces eval candidate JSONL.
+Related files:
+
+- [`kg_demo.py`](kg_demo.py)
+- [`pipeline/kg.py`](pipeline/kg.py)
+- [`data/docs/sample.md`](data/docs/sample.md)
+- [`data/docs/catalog.md`](data/docs/catalog.md)
 
 ## Important Files for Grading
 
-```text
-submission/REFLECTION.md
-submission/VERIFY_OUTPUT.md
-submission/PYTEST_OUTPUT.md
-submission/DBT_BUILD_OUTPUT.md
+### Submission evidence
 
-datasets/eval_golden.jsonl
-datasets/preference_pairs.jsonl
+- [`submission/REFLECTION.md`](submission/REFLECTION.md)
+- [`submission/VERIFY_OUTPUT.md`](submission/VERIFY_OUTPUT.md)
+- [`submission/PYTEST_OUTPUT.md`](submission/PYTEST_OUTPUT.md)
+- [`submission/DBT_BUILD_OUTPUT.md`](submission/DBT_BUILD_OUTPUT.md)
 
-bonus/DESIGN.md
-bonus/prototype_observability.py
-bonus/PROTOTYPE_OUTPUT.md
-bonus/prototype_eval_candidates.jsonl
-bonus/prototype_quality_summary.csv
-```
+### Generated datasets
+
+- [`datasets/eval_golden.jsonl`](datasets/eval_golden.jsonl)
+- [`datasets/preference_pairs.jsonl`](datasets/preference_pairs.jsonl)
+
+### Bonus files
+
+- [`bonus/DESIGN.md`](bonus/DESIGN.md)
+- [`bonus/prototype_observability.py`](bonus/prototype_observability.py)
+- [`bonus/PROTOTYPE_OUTPUT.md`](bonus/PROTOTYPE_OUTPUT.md)
+- [`bonus/prototype_eval_candidates.jsonl`](bonus/prototype_eval_candidates.jsonl)
+- [`bonus/prototype_quality_summary.csv`](bonus/prototype_quality_summary.csv)
+
+### Core scripts
+
+- [`verify.py`](verify.py)
+- [`main.py`](main.py)
+- [`flywheel.py`](flywheel.py)
+- [`kg_demo.py`](kg_demo.py)
+- [`pipeline/extract.py`](pipeline/extract.py)
+- [`pipeline/validate.py`](pipeline/validate.py)
+- [`pipeline/transform.py`](pipeline/transform.py)
+- [`pipeline/dag.py`](pipeline/dag.py)
+- [`pipeline/streaming.py`](pipeline/streaming.py)
+- [`pipeline/features.py`](pipeline/features.py)
+- [`pipeline/embed.py`](pipeline/embed.py)
+- [`pipeline/kg.py`](pipeline/kg.py)
 
 ## Recommended Reproduction Commands
 
@@ -195,5 +234,3 @@ cd dbt_project
 $env:DBT_PROFILES_DIR="."
 dbt build
 ```
-
----
